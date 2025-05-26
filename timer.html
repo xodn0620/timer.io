@@ -207,6 +207,16 @@
                 document.getElementById('timer').classList.add('active');
                 startTimestamp = Date.now();
                 targetTimestamp = startTimestamp + seconds * 1000;
+
+                // 5분(300초)에서 시작할 때 5분 알림을 이미 울린 것으로 처리
+                if (seconds === 300) {
+                    fiveMinPlayed = true;
+                }
+                // 10분(600초)에서 시작할 때 10분 알림을 이미 울린 것으로 처리
+                if (seconds === 600) {
+                    tenMinPlayed = true;
+                }
+
                 timer = setInterval(() => {
                     const now = Date.now();
                     let remaining = Math.round((targetTimestamp - now) / 1000);
