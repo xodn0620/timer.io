@@ -52,6 +52,32 @@
             background: linear-gradient(135deg, #ff4f4f 60%, #8b2727 100%);
             border-color: #ff4f4f;
         }
+        #timer .timer-num {
+            font-family: 'Segoe UI', 'Arial Black', Arial, sans-serif;
+            font-size: 4.5vw;
+            max-font-size: 44px;
+            min-font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff 40%, #b3c6ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 12px #1e3c7244, 0 1px 0 #fff, 0 0px 8px #4f8cff33;
+            letter-spacing: 2px;
+            margin: 0 2px;
+            transition: color 0.2s, text-shadow 0.2s;
+        }
+        #timer .timer-colon {
+            font-size: 4vw;
+            font-weight: 700;
+            color: #fff;
+            opacity: 0.7;
+            margin: 0 1vw;
+            text-shadow: 0 2px 8px #1e3c7233;
+        }
+        #timer.active .timer-num {
+            background: linear-gradient(90deg, #fff 40%, #ff4f4f 100%);
+            text-shadow: 0 2px 16px #ff4f4f66, 0 1px 0 #fff, 0 0px 8px #ff4f4f33;
+        }
         .btn-group {
             display: flex;
             justify-content: center;
@@ -102,7 +128,13 @@
     </style>
 </head>
 <body>
-    <div id="timer" onclick="stopAllSounds()" title="알람 종료">00:00:00</div>
+    <div id="timer" onclick="stopAllSounds()" title="알람 종료">
+        <span class="timer-num hour">00</span>
+        <span class="timer-colon">:</span>
+        <span class="timer-num min">00</span>
+        <span class="timer-colon">:</span>
+        <span class="timer-num sec">00</span>
+    </div>
     <div class="btn-group">
         <button onclick="addMinutes(10)">+10분</button>
         <button onclick="addMinutes(1)">+1분</button>
@@ -135,7 +167,9 @@
             const hrs = String(Math.floor(seconds / 3600)).padStart(2, '0');
             const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
             const secs = String(seconds % 60).padStart(2, '0');
-            document.getElementById('timer').textContent = `${hrs}:${mins}:${secs}`;
+            document.querySelector('#timer .hour').textContent = hrs;
+            document.querySelector('#timer .min').textContent = mins;
+            document.querySelector('#timer .sec').textContent = secs;
         }
 
         function unlockAudio() {
