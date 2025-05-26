@@ -120,6 +120,8 @@
         let timer;
         let seconds = 0;
         let isRunning = false;
+        let startTimestamp = null; // 타이머 시작 시점(밀리초)
+        let targetTimestamp = null; // 타이머 종료 예정 시점(밀리초)
         const alarm = document.getElementById('alarmSound');
         const fiveSec = document.getElementById('fiveSecSound');
         const fiveMin = document.getElementById('fiveMinSound');
@@ -175,32 +177,37 @@
                 fiveMinPlayed = false;
                 tenMinPlayed = false;
                 document.getElementById('timer').classList.add('active');
+                startTimestamp = Date.now();
+                targetTimestamp = startTimestamp + seconds * 1000;
                 timer = setInterval(() => {
-                    if (seconds > 0) {
-                        seconds--;
+                    const now = Date.now();
+                    let remaining = Math.round((targetTimestamp - now) / 1000);
+                    if (remaining < 0) remaining = 0;
+                    seconds = remaining;
 
-                        // 10분(600초) 남았을 때
-                        if (seconds === 600 && !tenMinPlayed) {
-                            playTenMin();
-                            tenMinPlayed = true;
-                        }
-                        // 5분(300초) 남았을 때
-                        if (seconds === 300 && !fiveMinPlayed) {
-                            playFiveMin();
-                            fiveMinPlayed = true;
-                        }
-                        // 5초 남았을 때
-                        if (seconds === 5 && !fiveSecPlayed) {
-                            playFiveSec();
-                            fiveSecPlayed = true;
-                        }
-                        updateDisplay();
-                    } else {
+                    // 10분(600초) 남았을 때
+                    if (seconds === 600 && !tenMinPlayed) {
+                        playTenMin();
+                        tenMinPlayed = true;
+                    }
+                    // 5분(300초) 남았을 때
+                    if (seconds === 300 && !fiveMinPlayed) {
+                        playFiveMin();
+                        fiveMinPlayed = true;
+                    }
+                    // 5초 남았을 때
+                    if (seconds === 5 && !fiveSecPlayed) {
+                        playFiveSec();
+                        fiveSecPlayed = true;
+                    }
+                    updateDisplay();
+
+                    if (seconds <= 0) {
                         pauseTimer();
                         playAlarm();
                         updateStartPauseBtn();
                     }
-                }, 1000);
+                }, 250); // 더 자주 체크하여 정확도 향상
             }
         }
 
@@ -208,6 +215,14 @@
             isRunning = false;
             clearInterval(timer);
             document.getElementById('timer').classList.remove('active');
+            // 남은 시간 보존
+            if (targetTimestamp) {
+                const now = Date.now();
+                seconds = Math.round((targetTimestamp - now) / 1000);
+                if (seconds < 0) seconds = 0;
+            }
+            startTimestamp = null;
+            targetTimestamp = null;
         }
 
         function resetTimer() {
