@@ -120,6 +120,29 @@
             background: linear-gradient(90deg, #1e90ff 60%, #4f8cff 100%);
             transform: translateY(-2px) scale(1.04);
         }
+        #startPauseBtn {
+            background: linear-gradient(90deg, #0050c8 60%, #003080 100%);
+            color: #fff;
+        }
+        #startPauseBtn:hover, #startPauseBtn:active {
+            background: linear-gradient(90deg, #003080 60%, #0050c8 100%);
+        }
+        #startPauseBtn.pause {
+            background: linear-gradient(90deg, #ff5f5f 60%, #c80000 100%);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(255,79,79,0.15);
+        }
+        #startPauseBtn.pause:hover, #startPauseBtn.pause:active {
+            background: linear-gradient(90deg, #c80000 60%, #ff5f5f 100%);
+            transform: translateY(-2px) scale(1.04);
+        }
+        #resetBtn {
+            background: linear-gradient(90deg, #009944 60%, #006633 100%);
+            color: #fff;
+        }
+        #resetBtn:hover, #resetBtn:active {
+            background: linear-gradient(90deg, #006633 60%, #009944 100%);
+        }
     </style>
 </head>
 <body>
@@ -134,11 +157,10 @@
     <div class="btn-group">
         <button onclick="addMinutes(10)">+10분</button>
         <button onclick="addMinutes(1)">+1분</button>
-        <button onclick="addSeconds(10)">+10초</button>
     </div>
     <div class="btn-group">
         <button id="startPauseBtn" onclick="toggleTimer()">시작</button>
-        <button onclick="resetTimer()">초기화</button>
+        <button id="resetBtn" onclick="resetTimer()">초기화</button>
     </div>
     <audio id="alarmSound" src="end.mp3"></audio>
     <audio id="fiveSecSound" src="5sec.mp3"></audio>
@@ -289,8 +311,10 @@
             const btn = document.getElementById('startPauseBtn');
             if (isRunning) {
                 btn.textContent = '정지';
+                btn.classList.add('pause');
             } else {
                 btn.textContent = '시작';
+                btn.classList.remove('pause');
             }
         }
 
