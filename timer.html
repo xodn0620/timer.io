@@ -116,8 +116,15 @@
             box-shadow: 0 2px 8px rgba(79,140,255,0.10);
             font-weight: 500;
         }
-        button:hover, button:active {
-            background: linear-gradient(90deg, #1e90ff 60%, #4f8cff 100%);
+        .btn-group button {
+            background: linear-gradient(90deg, #e0e0e0 60%, #bdbdbd 100%);
+            color: #222;
+            box-shadow: 0 2px 8px rgba(120,120,120,0.10);
+            font-weight: 600;
+        }
+        .btn-group button:hover, .btn-group button:active {
+            background: linear-gradient(90deg, #bdbdbd 60%, #e0e0e0 100%);
+            color: #111;
             transform: translateY(-2px) scale(1.04);
         }
         #startPauseBtn {
@@ -155,6 +162,7 @@
         <span class="timer-num sec">00</span>
     </div>
     <div class="btn-group">
+        <button onclick="addMinutes(45)">+45분</button>
         <button onclick="addMinutes(10)">+10분</button>
         <button onclick="addMinutes(1)">+1분</button>
     </div>
