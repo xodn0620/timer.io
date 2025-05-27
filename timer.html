@@ -362,6 +362,10 @@
             tenMin.currentTime = 0;
         }
 
+        window.addEventListener('DOMContentLoaded', () => {
+            resetTimer();
+        });
+
         updateDisplay();
         updateStartPauseBtn();
     </script>
