@@ -198,21 +198,35 @@
 
         function unlockAudio() {
             if (!audioUnlocked) {
+                // 볼륨 0으로 설정
+                const originalVolumes = [
+                    alarm.volume, fiveSec.volume, fiveMin.volume, tenMin.volume
+                ];
+                alarm.volume = 0;
+                fiveSec.volume = 0;
+                fiveMin.volume = 0;
+                tenMin.volume = 0;
+
+                // 오디오 권한만 열기
                 alarm.play().then(() => {
                     alarm.pause();
                     alarm.currentTime = 0;
+                    alarm.volume = originalVolumes[0];
                 }).catch(()=>{});
                 fiveSec.play().then(() => {
                     fiveSec.pause();
                     fiveSec.currentTime = 0;
+                    fiveSec.volume = originalVolumes[1];
                 }).catch(()=>{});
                 fiveMin.play().then(() => {
                     fiveMin.pause();
                     fiveMin.currentTime = 0;
+                    fiveMin.volume = originalVolumes[2];
                 }).catch(()=>{});
                 tenMin.play().then(() => {
                     tenMin.pause();
                     tenMin.currentTime = 0;
+                    tenMin.volume = originalVolumes[3];
                 }).catch(()=>{});
                 audioUnlocked = true;
             }
