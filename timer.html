@@ -198,37 +198,26 @@
 
         function unlockAudio() {
             if (!audioUnlocked) {
-                // 볼륨 0으로 설정
-                const originalVolumes = [
-                    alarm.volume, fiveSec.volume, fiveMin.volume, tenMin.volume
-                ];
-                alarm.volume = 0;
-                fiveSec.volume = 0;
-                fiveMin.volume = 0;
-                tenMin.volume = 0;
+                // 완전히 음소거
+                alarm.muted = true;
+                fiveSec.muted = true;
+                fiveMin.muted = true;
+                tenMin.muted = true;
 
                 // 오디오 권한만 열기
-                alarm.play().then(() => {
-                    alarm.pause();
-                    alarm.currentTime = 0;
-                    alarm.volume = originalVolumes[0];
-                }).catch(()=>{});
-                fiveSec.play().then(() => {
-                    fiveSec.pause();
-                    fiveSec.currentTime = 0;
-                    fiveSec.volume = originalVolumes[1];
-                }).catch(()=>{});
-                fiveMin.play().then(() => {
-                    fiveMin.pause();
-                    fiveMin.currentTime = 0;
-                    fiveMin.volume = originalVolumes[2];
-                }).catch(()=>{});
-                tenMin.play().then(() => {
-                    tenMin.pause();
-                    tenMin.currentTime = 0;
-                    tenMin.volume = originalVolumes[3];
-                }).catch(()=>{});
-                audioUnlocked = true;
+                Promise.all([
+                    alarm.play().catch(()=>{}).then(() => { alarm.pause(); alarm.currentTime = 0; }),
+                    fiveSec.play().catch(()=>{}).then(() => { fiveSec.pause(); fiveSec.currentTime = 0; }),
+                    fiveMin.play().catch(()=>{}).then(() => { fiveMin.pause(); fiveMin.currentTime = 0; }),
+                    tenMin.play().catch(()=>{}).then(() => { tenMin.pause(); tenMin.currentTime = 0; })
+                ]).finally(() => {
+                    // 다시 음소거 해제
+                    alarm.muted = false;
+                    fiveSec.muted = false;
+                    fiveMin.muted = false;
+                    tenMin.muted = false;
+                    audioUnlocked = true;
+                });
             }
         }
 
